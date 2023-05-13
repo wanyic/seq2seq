@@ -14,6 +14,12 @@ Sequence to sequence models which are also referred to as Seq2Seq models are a t
 
 The development of Seq2Seq models has brought about significant transformation in machine translation. These models have revolutionized the field by enabling the creation of highly accurate and efficient translation systems. With the use of Seq2Seq models, researchers have achieved impressive speed and accuracy in translating between multiple languages. One remarkable feature of these models is their capacity to learn from extensive and diverse datasets, leading to continuous improvements over time. This continuous improvement enhances the models’ fluency and accuracy, ultimately enabling them to achieve near- human-level translation quality.
 
+
+## The Seq2Seq (Encoder- Decoder) Model
+
+For this review we will focus on the Encoder-Decoder seq2seq model for machine translation. The encoder and decoder components are both recurrent neural networks (RNNs) that work together to handle the task of machine translation. This type of model is a RNN-based model with recurrent structure from a non-fixed-sized sequence input to an non-fixed-sized sequence output. That is to say one RNN encodes a sequence of symbols and transforms them into a fixed-length vector representation, and the other decodes the representation into another sequence of symbols that has non-fixed length (Cho et al. 2014). Typically the encoder network, takes a sequence of input tokens (words, characters, etc) and transforms them into a fixed-size vector representation called “context vector” or “thought vector” and then the decoder network uses this context vector as input which is referred to as an initial hidden state, and generates each output token in a loop until a special “end-of-sequence” token is generated indicating the output vector sequence. For our project, we have a RNN-based model that reads in a sentence in English and then outputs a sentence in French.
+
+
 <figure>
   <img src="img/image2.png" width="500"/>
 </figure>
@@ -62,10 +68,6 @@ The objective function is formulated as the average negative log-likelihood loss
   <img src="img/image1.png" width = "400"/>
 </center>
 
-
-## The Seq2Seq (Encoder- Decoder) Model
-
-For this review we will focus on the Encoder-Decoder seq2seq model for machine translation. The encoder and decoder components are both recurrent neural networks (RNNs) that work together to handle the task of machine translation. This type of model is a RNN-based model with recurrent structure from a non-fixed-sized sequence input to an non-fixed-sized sequence output. That is to say one RNN encodes a sequence of symbols and transforms them into a fixed-length vector representation, and the other decodes the representation into another sequence of symbols that has non-fixed length (Cho et al. 2014). Typically the encoder network, takes a sequence of input tokens (words, characters, etc) and transforms them into a fixed-size vector representation called “context vector” or “thought vector” and then the decoder network uses this context vector as input which is referred to as an initial hidden state, and generates each output token in a loop until a special “end-of-sequence” token is generated indicating the output vector sequence. For our project, we have a RNN-based model that reads in a sentence in English and then outputs a sentence in French.
 
 
 # Application
@@ -225,6 +227,30 @@ Now that we have tried translating English to French using our Seq2Seq model, we
 | I try.   | 我试试。    | wǒ shì shì .|
 | I won!   | 我赢了。    | wǒ yíng le .|
 
+Using the same sequence to sequence model we just built, we can randomly select 10 English sentences from the data set and generate Chinese pinyin translations for English inputs. Below we have the translated results shown.
+
+| Input          | Target                    | Output           | Original Target |
+|:-------------  |:------------------        |:------           | :----------      |
+| They didn't act quickly. | tā men méi lì kè xīnɡ dònɡ .| tā mén bú shì xīnɡ dònɡ  | 他们没有立刻行动。|
+| I was at home. | wǒ ɡānɡ cái zài jiá.   | wǒ zhī dǎo nǐ de .  | 我刚才在家。 
+| Please continue.  | qǐng jì xù . | qǐng ɡuān de . | 请继续。 
+| Tom can swim pretty well.  | tānɡ mǔ yóu de hěn hǎo . | tānɡ mǔ shì ɡàn hǎo de   | 汤姆游得很好。
+| She asked him for help.  | tā xiànɡ tā qiú zhú .| tā shì tānɡ mǔ .  | 她向他求助。 
+| I couldn't leave Tom. | wǒ bú néng lī kāi tānɡ mǔ . | wǒ bú néng lī kāi yāo shì .| 我不能离开汤姆。
+| A good idea came to him.   | tā xiǎnɡ dào yī ɡè hǎo zhú yī .| nǐ nái zài shì tānɡ mǔ de . | 他想到一个好主意。
+| I'm not a dictator.  | wǒ bú shì dú cái zhě | wǒ bú shì shānɡ mǔ de . | 我不是独裁者。 
+| Hand me my towel. | bānɡ wǒ dài yī xià máo jīn .  | nǐ zài shén mɑ de . | 帮我带一下毛巾。 
+| I'll do it.      | wǒ huì zuò de .               | wǒ huì zuò de . | 我会做的。
+
+From the above result, we can see that the accuracy of the translation is not as good as the French translations and this could be because of the longer and more complicated sequence of pinyin. Looking at the target column and the output column, we can see that our translated results still captured some similar patterns of the target pinyin. It is also interesting to see that in the first row, where the word "didn't" is successfully translated to "bú shì" which is another way of expressing "méi" in Chinese. Below, we also have the plot of the loss function.
+ 
+ <figure>
+  <img src="img/model_curve.png" width="500"/>
+</figure>
+ 
+From the plot, we can see that there are more fluctuations compared to the plot from the English to French translation. These fluctuations could be due the fact that we have longer and more complex target sequences and thus the values from the loss function are also larger.
+
+# Reference
 
 
 
