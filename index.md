@@ -1,12 +1,12 @@
+# Sequence to Sequence Models for Language Processing
 
+Before exploring the specific mathematical concepts of sequence to sequence models, let's begin with high-level understanding of what goes on behind the scenes of language translation. Consider the early attempts in the past, when dictionaries or grammar books were relied upon for word translations, and contrast that with modern machine translation systems like Google Translate. Sequence to sequence models for machine translation essentially operate on a similar principle but with the use of advanced algorithms to perform translations. These evolutionary translations systems such as machine language translators have fascinated humans for centuries. Machine translation technology came after the advent of digital computing and the advancements in technology have significantly improved our ability to overcome language barriers, which has long been a fundamental challenge for linguists, computer scientists, and language learners alike. They have been adapted in technology and are used to translate between human languages such as the online translation websites that people use to assimilate content that is not in their native language (Neubig 2017). The machine translation system as part of the sequence to sequence models operates on the same principle of Google's translation system, where we have an input and an output. The input corresponds to the source language while the output to the target language. Machine translation can be described as the process of transforming a sequence of words in the source language into an effective model that enables accurate conversion across a wide range of languages (Neubig 2017). Machine translation is a well known practical example of  sequence to sequence models.
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+One aspect that is particularly motivating about sequence to sequence models for language translation is their ability to bridge communication gaps and foster understanding across different languages and cultures. By leveraging sequence to sequence models, we can facilitate accurate translations between languages, enabling people to connect, share ideas and collaborate on a global scale.
 
-[Link to another page](./another-page.html).
+## What is sequence to sequence models and its Application to Natural language translation?
 
-There should be whitespace between paragraphs.
-
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
+Sequence to sequence models which are also referred to as Seq2Seq models are a type of neural network architecture that are designed to map sequences and are applicable for tasks where the input and output are both sequences of variable length. Seq2Seq models are particularly popular and effective in a field with language translation tasks, which includes text summarization, dialogue generation, conversation modeling and machine translation, where the goal is to convert text sequence from one form of sequences to another. They have also been extended to handle more complex input and output types, such as image captioning and speech recognition (Cho 2014). Seq2Seq models encompass a wider range of models that involve mapping one sequence to another as mentioned earlier. While machine translation falls within this category, it also encompasses a diverse range of other methods utilized for various tasks (Neubig 2017). Consider a computer program as a system that receives a sequence of input bits and produces a sequence of output bits. Examples of this sequence conversion are shown below.
 
 # Application
 
@@ -22,6 +22,14 @@ Now that we have gained some mathematical knowledge about sequence to sequence m
 | Run!    |                   Courez !   |
 | Begin.  |                   Commencez. |
 | Begin.  |                     Commence.|
+
+The R packages we will be using for the model implementation are shown below. The **keras** package is a high-level neural networks API developed with a focus on enabling fast experimentation which is very useful in Seq2Seq modeling. The **data.table** and **stringr** packages are used to help us read in the text data file and clean or modify the data to our desired form.
+
+```r
+library(keras)
+library(data.table)
+library(stringr)
+```
 
 ## Data Vectorization
 
@@ -42,13 +50,17 @@ num_encoder_tokens <- length(input_characters)
 num_decoder_tokens <- length(target_characters)
 max_encoder_seq_length <- max(sapply(input_texts,length))
 max_decoder_seq_length <- max(sapply(target_texts,length))
-
-cat('Number of samples:', length(input_texts),'\n')
-cat('Number of unique input tokens:', num_encoder_tokens,'\n')
-cat('Number of unique output tokens:', num_decoder_tokens,'\n')
-cat('Max sequence length for inputs:', max_encoder_seq_length,'\n')
-cat('Max sequence length for outputs:', max_decoder_seq_length,'\n')
 ```
+
+> Number of samples: 10000 
+> 
+> Number of unique input tokens: 70
+> 
+> Number of unique output tokens: 93
+> 
+> Max sequence length for inputs: 14
+> 
+> Max sequence length for outputs: 59
 
 ## Encoder-Decoder Modeling
 
@@ -66,6 +78,30 @@ For model tuning, there are several parameters that we may want to vary based on
 > 
 > Decoded sentence:  C'es s ais ais ss aiss ss ss ais ss ais ss aiss ss aiss ss 
 
+Below we have the encoder and decoder to process the input sequence with a lstm layer unit of 350. Note that the overall structure of our model is implemented based on the character level Seq2Seq model example from the [Keras page](https://keras.io/examples/nlp/lstm_seq2seq/) and R codes from Keras' [Github repository](https://github.com/rstudio/keras/blob/main/vignettes/examples/lstm_seq2seq.R).
+
+```r
+# lstm layer units/latent dimension
+latent_dim <- 350
+
+# define an input sequence and process it.
+encoder_inputs  <- layer_input(shape=list(NULL, num_encoder_tokens))
+encoder <- layer_lstm(units=latent_dim, return_state=TRUE)
+encoder_results <- encoder_inputs %>% encoder
+# discard encoder_outputs and keep the states for decoder.
+encoder_states  <- encoder_results[2:3]
+
+# use encoder_states as initial state.
+decoder_inputs  <- layer_input(shape=list(NULL, num_decoder_tokens))
+# return full output sequences from decoder and return internal states for inferences
+decoder_lstm <- layer_lstm(units=latent_dim, return_sequences=TRUE,
+                           return_state=TRUE)
+decoder_results <- decoder_lstm(decoder_inputs, initial_state=encoder_states)
+decoder_dense <- layer_dense(units=num_decoder_tokens, activation='softmax')
+decoder_outputs <- decoder_dense(decoder_results[[1]])
+```
+
+Then, using the processed input data from the encoder and decoder we can define the main model. The optimizer for our model is rmsprop which is similar to the gradient descent algorithm with momentum and usually works well with neuron networks. We also have categorical cross-entrophy as the loss function since we are working with text data. Additionally, the batch size for our model is 128 since we have a large dataset, we want a larger batch size that can give faster progress in training.
 ### Header 3
 
 ```js
