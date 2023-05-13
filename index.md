@@ -26,6 +26,10 @@ For this review we will focus on the Encoder-Decoder seq2seq model for machine t
 
 As shown from the image above, the encoder takes the source language sentence, and the decoder part generates the translated sentence in the target language based on the encoded representation. The model maps an input sequence to an output sequence, with the input and output being of different length and at the end there is an end of sequence. In other words the encoder captures the meaning of the source sentence, while the decoder generates the corresponding translation token by token (word by word or character by character).
 
+<center>
+  <img src="img/ed_image.png" width = "500"/>
+</center>
+
 The encoding part has the encoder embedding and the recurrent layer. When processing the ith word in the input sentence, the encoder embedding layer converts each word in the input sentence to the embedding vector and each embedding vector is generated as follows
 
 <center>
@@ -65,9 +69,13 @@ The model is then trained to optimize the likelihood of the target sequence give
 The objective function is formulated as the average negative log-likelihood loss over all time steps and is given as below:
 
 <center>
-  <img src="img/image1.png" width = "400"/>
+  <img src="img/image1.png" width = "500"/>
 </center>
 
+The MLE is applied to the conditional probability of generating the target sequence (Y) given the source sequence (X). This is done by minimizing the negative log-likelihood (NLL) of the target sequence given the model’s predictions. 
+
+Mathematically, the MLE objective function here is expressed:
+Objective = -sum(log(P(y_j|y_1,....,y_({j-1},z))), where P(y_j,...,y_{j-1},z) represents the conditional probability of generatinng the j-th target token y_j given the previously generated token y_1: y_{j-1} and the context vector z. By minimizing the negative log-likelihood, the model is encouraged to assign higher probabilities to the correct target tokens and penalize lower probabilities for incorrect predictions. This optimization process guides the model to learn the parameters that maximize the likelihood of generating the correct output sequences. 
 
 
 # Application
@@ -251,7 +259,17 @@ From the above result, we can see that the accuracy of the translation is not as
 From the plot, we can see that there are more fluctuations compared to the plot from the English to French translation. These fluctuations could be due the fact that we have longer and more complex target sequences and thus the values from the loss function are also larger.
 
 # Reference
+[1] Neubig, G. (2017, March 5). Neural machine translation and sequence-to-sequence models: A tutorial. arXiv.org. https://arxiv.org/abs/1703.01619 
 
+[2] Cho, K., van Merrienboer, B., Gulcehre, C., Bahdanau, D., Bougares, F., Schwenk, H., &amp; Bengio, Y. (2014, September 3). Learning phrase representations using RNN encoder-decoder for statistical machine translation. arXiv.org. https://arxiv.org/abs/1406.1078 
+
+[3] Sutskever, I., Vinyals, O., &amp; Le, Q. V. (2014, December 14). Sequence to sequence learning with Neural Networks. arXiv.org. https://arxiv.org/abs/1409.3215 
+
+[4] Jagfeld, G., Jenne, S., &amp; Vu, N. T. (2018, October 11). Sequence-to-sequence models for data-to-text natural language generation: Word- vs. character-based processing and output diversity. arXiv.org. https://arxiv.org/abs/1810.04864 
+
+[5] Keras Team. (n.d.). Keras documentation: Character-level recurrent sequence-to-sequence model. Keras. https://keras.io/examples/nlp/lstm_seq2seq/ 
+
+[6] Tf.keras.layers.LSTM&nbsp;  tensorflow V2.12.0. TensorFlow. (n.d.). https://www.tensorflow.org/api_docs/python/tf/keras/layers/LSTM 
 
 
 
