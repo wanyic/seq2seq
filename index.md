@@ -1,14 +1,72 @@
 # Sequence to Sequence Models for Language Processing
 
-Before exploring the specific mathematical concepts of sequence to sequence models, let's begin with high-level understanding of what goes on behind the scenes of language translation. Consider the early attempts in the past, when dictionaries or grammar books were relied upon for word translations, and contrast that with modern machine translation systems like Google Translate. Sequence to sequence models for machine translation essentially operate on a similar principle but with the use of advanced algorithms to perform translations. These evolutionary translations systems such as machine language translators have fascinated humans for centuries. Machine translation technology came after the advent of digital computing and the advancements in technology have significantly improved our ability to overcome language barriers, which has long been a fundamental challenge for linguists, computer scientists, and language learners alike. They have been adapted in technology and are used to translate between human languages such as the online translation websites that people use to assimilate content that is not in their native language (Neubig 2017). The machine translation system as part of the sequence to sequence models operates on the same principle of Google's translation system, where we have an input and an output. The input corresponds to the source language while the output to the target language. Machine translation can be described as the process of transforming a sequence of words in the source language into an effective model that enables accurate conversion across a wide range of languages (Neubig 2017). Machine translation is a well known practical example of  sequence to sequence models.
+Before exploring the specific mathematical concepts of sequence to sequence models, let's begin with high-level understanding of what goes on behind the scenes of language translation. Consider the early attempts in the past, when dictionaries or grammar books were relied upon for word translations, and contrast that with modern machine translation systems like Google Translate. Sequence to sequence models for machine translation essentially operate on a similar principle but with the use of advanced algorithms to perform translations. These evolutionary translations systems such as machine language translators have fascinated humans for centuries. Machine translation technology came after the advent of digital computing and the advancements in technology have significantly improved our ability to overcome language barriers, which has long been a fundamental challenge for linguists, computer scientists, and language learners alike. They have been adapted in technology and are used to translate between human languages such as the online translation websites that people use to assimilate content that is not in their native language (Neubig et al. 2017). The machine translation system as part of the sequence to sequence models operates on the same principle of Google's translation system, where we have an input and an output. The input corresponds to the source language while the output to the target language. Machine translation can be described as the process of transforming a sequence of words in the source language into an effective model that enables accurate conversion across a wide range of languages (Neubig et al. 2017). Machine translation is a well known practical example of  sequence to sequence models.
 
 One aspect that is particularly motivating about sequence to sequence models for language translation is their ability to bridge communication gaps and foster understanding across different languages and cultures. By leveraging sequence to sequence models, we can facilitate accurate translations between languages, enabling people to connect, share ideas and collaborate on a global scale.
 
 ## What is sequence to sequence models and its Application to Natural language translation?
 
-Sequence to sequence models which are also referred to as Seq2Seq models are a type of neural network architecture that are designed to map sequences and are applicable for tasks where the input and output are both sequences of variable length. Seq2Seq models are particularly popular and effective in a field with language translation tasks, which includes text summarization, dialogue generation, conversation modeling and machine translation, where the goal is to convert text sequence from one form of sequences to another. They have also been extended to handle more complex input and output types, such as image captioning and speech recognition (Cho 2014). Seq2Seq models encompass a wider range of models that involve mapping one sequence to another as mentioned earlier. While machine translation falls within this category, it also encompasses a diverse range of other methods utilized for various tasks (Neubig 2017). Consider a computer program as a system that receives a sequence of input bits and produces a sequence of output bits. Examples of this sequence conversion are shown below.
+Sequence to sequence models which are also referred to as Seq2Seq models are a type of neural network architecture that are designed to map sequences and are applicable for tasks where the input and output are both sequences of variable length. Seq2Seq models are particularly popular and effective in a field with language translation tasks, which includes text summarization, dialogue generation, conversation modeling and machine translation, where the goal is to convert text sequence from one form of sequences to another. They have also been extended to handle more complex input and output types, such as image captioning and speech recognition (Cho et al. 2014). Seq2Seq models encompass a wider range of models that involve mapping one sequence to another as mentioned earlier. While machine translation falls within this category, it also encompasses a diverse range of other methods utilized for various tasks (Neubig et al. 2017). Consider a computer program as a system that receives a sequence of input bits and produces a sequence of output bits. Examples of this sequence conversion are shown below.
 
-![](https://github.com/wanyic/seq2seq/tree/main/img/image4.png)
+<figure>
+  <img src="img/image4.png" width="300"/>
+</figure>
+
+The development of Seq2Seq models has brought about significant transformation in machine translation. These models have revolutionized the field by enabling the creation of highly accurate and efficient translation systems. With the use of Seq2Seq models, researchers have achieved impressive speed and accuracy in translating between multiple languages. One remarkable feature of these models is their capacity to learn from extensive and diverse datasets, leading to continuous improvements over time. This continuous improvement enhances the models’ fluency and accuracy, ultimately enabling them to achieve near- human-level translation quality.
+
+<figure>
+  <img src="img/image2.png" width="500"/>
+</figure>
+
+As shown from the image above, the encoder takes the source language sentence, and the decoder part generates the translated sentence in the target language based on the encoded representation. The model maps an input sequence to an output sequence, with the input and output being of different length and at the end there is an end of sequence. In other words the encoder captures the meaning of the source sentence, while the decoder generates the corresponding translation token by token (word by word or character by character).
+
+The encoding part has the encoder embedding and the recurrent layer. When processing the ith word in the input sentence, the encoder embedding layer converts each word in the input sentence to the embedding vector and each embedding vector is generated as follows
+
+<center>
+  <img src="img/image10.png" width = "200"/>
+</center>
+
+Once this is given, now during the processing of the ith embedding vector,  the encoder recurrent layer generates each hidden vector from each embedding vector. Each hidden vector is calculated in the following process, where phi is the Long Short Term Memory variant:
+
+<center>
+  <img src="img/image3.png" width = "100"/>
+</center>
+
+On the other hand, the decoder which gives the output (target sentence) has three components: Decoder Embedding layer, Decoder Recurrent Layer and Decoder output layer. The embedding layer converts each word in the output sentence to the embedding vector which represents the (j-1)th word (output). The output for the embedding vector is calculated by the following formula:
+
+<center>
+  <img src="img/image7.png" width = "300"/>
+</center>
+
+Where $y_{j-1}$ is the one-hot vector (input) which represents the (j-1)th word generated by the decoder output layer. The decoder recurrent layer then now generates the hidden vectors from the previously generated embedding vectors, and each hidden vector is given by the following:
+
+<center>
+  <img src="img/image11.png" width = "100"/>
+</center>
+
+Lastly, the decoder output layer generates the probability of the j-th word of the output sentence from the hidden vector above, and each probability of the jth word is given by the following:
+
+<center>
+  <img src="img/image8.png" width = "300"/>
+</center>
+
+The softmax activation function is used to determine the probability distribution over the target vocabulary at each decoding step, where the output of the decoder is passed through a softmax function which takes a vector of arbitrary values and normalizes them into a probability distribution (Cho et al. 2014). By applying the softmax activation function,the model is able to transform the output of the decoder’s hidden layer into a probability distribution. The highest probability corresponds to the most probable word at each decoding step, enabling the model to select the most likely prediction, which aids in generating coherent and accurate translations.
+
+The RNN Encoder-Decoder seq2seq model benefits from the inherent ability of RNNs to handle sequential data, allowing it to capture the dependencies between input and output sequences. It may however, suffer from limitation of standard RNNs in modeling long-term dependencies. In that case, variants such as Long Short Term Memory (LSTM) are used in the encoder and decoder components to mitigate the vanishing gradient problem and better capture long-range dependencies (Ilya et al. 2014). For this review we will use LSTM to map the input sequence to a vector of a fixed dimensionality, and also another deep LSTM to decode the target sequence from the vector.
+
+The model is then trained to optimize the likelihood of the target sequence given the source sequence. Essentially, the objective function in the model is optimized to minimize the discrepancy between the predicted translation (output sequence) and the target translations (output sequence). Typically the objective function that is used in these tasks is the cross-entropy loss function, also known as the negative log-likelihood loss function. This loss function quantifies the dissimilarity between the predicted probability distribution over the target vocabulary and the true distribution of the target words at each time step.
+
+The objective function is formulated as the average negative log-likelihood loss over all time steps and is given as below:
+
+<center>
+  <img src="img/image1.png" width = "400"/>
+</center>
+
+
+## The Seq2Seq (Encoder- Decoder) Model
+
+For this review we will focus on the Encoder-Decoder seq2seq model for machine translation. The encoder and decoder components are both recurrent neural networks (RNNs) that work together to handle the task of machine translation. This type of model is a RNN-based model with recurrent structure from a non-fixed-sized sequence input to an non-fixed-sized sequence output. That is to say one RNN encodes a sequence of symbols and transforms them into a fixed-length vector representation, and the other decodes the representation into another sequence of symbols that has non-fixed length (Cho et al. 2014). Typically the encoder network, takes a sequence of input tokens (words, characters, etc) and transforms them into a fixed-size vector representation called “context vector” or “thought vector” and then the decoder network uses this context vector as input which is referred to as an initial hidden state, and generates each output token in a loop until a special “end-of-sequence” token is generated indicating the output vector sequence. For our project, we have a RNN-based model that reads in a sentence in English and then outputs a sentence in French.
+
 
 # Application
 
