@@ -1,6 +1,4 @@
----
-layout: default
----
+
 
 Text can be **bold**, _italic_, or ~~strikethrough~~.
 
@@ -10,9 +8,20 @@ There should be whitespace between paragraphs.
 
 There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
 
-# Header 1
+# Application
 
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+Now that we have gained some mathematical knowledge about sequence to sequence models in machine translation, we can apply them using existing data. The data we are going to use is a data frame with sentence pairs in which the first column is the input texts (English texts) and the second column is the target texts (French texts). Small part of the data is also shown below. Notice that sometimes the same English phrase can have different translations in French. The dimension of our data set is 10000 rows of sentence pairs and 2 columns.
+
+| Input   | Target                       | 
+|:--------|:-----------------------------|
+|  Go.    |                       Va !   |
+|  Go.    |                    Marche.   |
+|  Hi.    |                    Salut !   |
+|  Hi.    |                     Salut.   |
+| Run!    |                    Cours !   |
+| Run!    |                   Courez !   |
+| Begin.  |                   Commencez. |
+| Begin.  |                     Commence.|
 
 ## Header 2
 
