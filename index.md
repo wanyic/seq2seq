@@ -20,9 +20,9 @@ The development of Seq2Seq models has brought about significant transformation i
 For this review we will focus on the Encoder-Decoder seq2seq model for machine translation. The encoder and decoder components are both recurrent neural networks (RNNs) that work together to handle the task of machine translation. This type of model is a RNN-based model with recurrent structure from a non-fixed-sized sequence input to an non-fixed-sized sequence output. That is to say one RNN encodes a sequence of symbols and transforms them into a fixed-length vector representation, and the other decodes the representation into another sequence of symbols that has non-fixed length (Cho et al. 2014). Typically the encoder network, takes a sequence of input tokens (words, characters, etc) and transforms them into a fixed-size vector representation called “context vector” or “thought vector” and then the decoder network uses this context vector as input which is referred to as an initial hidden state, and generates each output token in a loop until a special “end-of-sequence” token is generated indicating the output vector sequence. For our project, we have a RNN-based model that reads in a sentence in English and then outputs a sentence in French.
 
 
-<figure>
+<center>
   <img src="img/image2.png" width="500"/>
-</figure>
+</center>
 
 As shown from the image above, the encoder takes the source language sentence, and the decoder part generates the translated sentence in the target language based on the encoded representation. The model maps an input sequence to an output sequence, with the input and output being of different length and at the end there is an end of sequence. In other words the encoder captures the meaning of the source sentence, while the decoder generates the corresponding translation token by token (word by word or character by character).
 
