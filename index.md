@@ -26,7 +26,7 @@ The encoding part has the encoder embedding and the recurrent layer. When proces
   <img src="img/image10.png" width = "200"/>
 </center>
 
-Once this is given, now during the processing of the ith embedding vector,  the encoder recurrent layer generates each hidden vector from each embedding vector. Each hidden vector is calculated in the following process, where phi is the Long Short Term Memory variant:
+Once this is given, now during the processing of the ith embedding vector, the encoder recurrent layer generates each hidden vector from each embedding vector. Each hidden vector is calculated in the following process, where phi is the Long Short Term Memory variant:
 
 <center>
   <img src="img/image3.png" width = "100"/>
@@ -189,7 +189,7 @@ Using the model we built, we can then translate input English phrase to French p
 |:-------------  |:------------------        |:------           |
 | Many thanks.   | Merci bien.               | Merci bien.  |
 | Skiing is fun. | C'est amusant de skier.   | Fais attention.  |
-| I felt happy.  | Je me suis senti heureux. | Je me suis senti  ar te. |
+| I felt happy.  | Je me suis senti heureux. | Je me suis senti ar te. |
 | Write to Tom.  | Écrivez à Tom.            | Avent-nous pertie.  |
 | You're upset.  | Tu es contrarié.          | Tu es contrarié.  |
 | I'm not armed. | Je ne suis pas armée.     | Je ne suis pas un part.|
@@ -198,106 +198,34 @@ Using the model we built, we can then translate input English phrase to French p
 | Let me see it. | Laisse-moi la regarder !  | Laissez-moi partir. |
 | Stop Tom.      | Arrête Tom.               | Arrête Tom.  |
 
-From the translated results above, we can see that sometimes the translations can be very close and accurate and sometimes the translations can be way off. To get more accurate translations, we can consider adding more layers to the encoder-decoder model so that it can recognize more complex patterns or trying out different values of latent dimensionality and optimizers. We can also evaluate the performance of the model using the plot of the loss function.
+From the translated results above, we can see that sometimes the translations can be very close and accurate and sometimes the translations can be way off. But overall, the produced outputs from our character level Seq2Seq model captures the sentence structure of the target sentences where the first character is always capitalized, space between words, and sentences are ended with a punctuation. To get more accurate translations, we might need to build a more complex model with more layers and more neurons for it to recognize longer and more complicated patterns, and consider trying out different values of latent dimensionality and optimizers. 
 
-### Header 3
+We can also evaluate the performance of the model using the plot of the loss function.
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
-```
+<figure>
+  <img src="img/s2s_model2.png" width="500"/>
+</figure>
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
-```
+From the plot above, we can see that out model is overfitting a little since the validation loss curve is above the loss curve. But overall, the two curves are still fairly close and ending at epochs = 100 seems suitable in this case.
 
-#### Header 4
+## Another example: English to Chinese Pinyin
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
+Now that we have tried translating English to French using our Seq2Seq model, we can also use this model to translate other languages to see possible differences in translation results and for fun! In this section, we will be translating English sentences to Chinese sentences and the [data](https://www.manythings.org/anki/) can still be found on the same website. However, we have to realize the limitation of our implemented model that when the number of unique characters is too large, it would be very computationally expensive and time consuming to process the sequences (note that there are more efficient neuron network models that can directly translate English to Chinese but our model is a very basic character level sequence to sequence model). Given the nature of the Chinese language, it would be very inefficient to vectorize every unique Chinese characters since there are over 2000 unique Chinese characters in our data set. Instead we can convert the Chinese characters to pinyin using the **pinyin** package. In this way the number unique characters can be reduced from 2000+ to 84. Below, we have a dataframe showing some of the input texts (English), target texts (Chinese pinyin), and original target texts (Chinese).
 
-##### Header 5
-
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
-
-###### Header 6
-
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
-
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
+| Input          | Original Target           | Target           |
+|:-------------  |:------------------        |:------           |
+|    Hi.   |   嗨。      |     hāi . |
+|    Hi.   |  你好。     |   nǐ hāo . |
+|   Run.   | 你用跑的。   | nǐ yòng pǎo de . |
+|    Stop! |    住手！   |  zhù shǒu ! |
+|  Wait!   |  等等！     | děnɡ děnɡ ! |
+|  Wait!   | 等一下！    | děnɡ yī xià ! |
+| Begin.   |  开始！     |  kāi shǐ !  |
+| Hello!   |  你好。     |   nǐ hāo .  |
+| I try.   | 我试试。    | wǒ shì shì .|
+| I won!   | 我赢了。    | wǒ yíng le .|
 
 
-### Definition lists can be used with HTML syntax.
 
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
 
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
 
-```
-The final element.
-```
